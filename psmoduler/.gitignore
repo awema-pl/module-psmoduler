@@ -1,0 +1,8 @@
+/*.log
+/.idea
+/vendor
+/node_modules
+/composer.lock
+/_dev/yarn.lock
+/_dev/package-lock.json
+/_dev/node_modules

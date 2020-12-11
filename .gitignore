@@ -1,0 +1,16 @@
+/node_modules
+/*.log
+/package-lock.json
+/.idea
+/vendor
+/composer.lock
+/yarn.lock
+/temp
+/psmoduler/node_modules
+/psmoduler/*.log
+/psmoduler/.idea
+/psmoduler/vendor
+/psmoduler/composer.lock
+/psmoduler/_dev/yarn.lock
+/psmoduler/_dev/package-lock.json
+/psmoduler/_dev/node_modules

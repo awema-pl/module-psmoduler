@@ -1,0 +1,21 @@
+{
+    "name": "awema-pl/ps_psmoduler",
+    "type": "prestashop-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Awema",
+            "email": "developer@awema.pl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Psmoduler\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Psmoduler\\": "tests/"
+        }
+    }
+}

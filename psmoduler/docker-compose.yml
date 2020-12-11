@@ -1,0 +1,54 @@
+version: '3.3'
+
+services:
+    db_psmoduler:
+        image: mysql:5.7
+        ports:
+            - 33006:3306
+        volumes:
+            - /var/lib/mysql
+        restart: 'no'
+        environment:
+            MYSQL_ROOT_PASSWORD: admin
+            MYSQL_DATABASE: ps
+            MYSQL_USER: ps
+            MYSQL_PASSWORD: ps
+        command: mysqld --sql_mode=""
+
+    phpmyadmin_psmoduler:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db_psmoduler:db
+        ports:
+            - 8182:80
+        environment:
+            MYSQL_USERNAME: root
+            MYSQL_ROOT_PASSWORD: admin
+
+    psmoduler:
+        depends_on:
+            - db_psmoduler
+        image: prestashop/prestashop:1.7.6.0
+        ports:
+            - "8082:80"
+        restart: 'no'
+        environment:
+            PS_INSTALL_AUTO: 1
+            PS_ERASE_DB: 0
+            DB_SERVER: db_psmoduler
+            DB_USER: ps
+            DB_PASSWD: ps
+            DB_NAME: ps
+            PS_DEV_MODE: 1
+            PS_DOMAIN: localhost:8082
+            PS_FOLDER_ADMIN: admin123
+            PS_FOLDER_INSTALL: install123
+
+            ADMIN_MAIL: demo@prestashop.com
+            ADMIN_PASSWD: 12345678
+
+            PS_LANGUAGE: en
+            PS_COUNTRY: en
+        volumes:
+            - /var/www/html
+            - ./:/var/www/html/modules/psmoduler

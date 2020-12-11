@@ -1,0 +1,14 @@
+{
+    "name": "psmoduler",
+    "description": "PrestaShop module from Awema.",
+    "main": "index.js",
+    "repository": "https://github.com/awema-pl/ps_psmoduler",
+    "author": "Awema <developer@awema.pl>",
+    "license": "MIT",
+    "devDependencies": {
+        "@symfony/webpack-encore": "^0.20.1"
+    },
+    "dependencies": {
+        "webpack-shell-plugin": "^0.5.0"
+    }
+}
