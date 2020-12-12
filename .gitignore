@@ -11,6 +11,6 @@
 /psmoduler/.idea
 /psmoduler/vendor
 /psmoduler/composer.lock
-/psmoduler/_dev/yarn.lock
-/psmoduler/_dev/package-lock.json
-/psmoduler/_dev/node_modules
+/psmoduler/yarn.lock
+/psmoduler/package-lock.json
+/psmoduler/node_modules

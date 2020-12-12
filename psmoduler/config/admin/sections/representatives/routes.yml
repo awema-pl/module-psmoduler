@@ -1,0 +1,7 @@
+_index:
+    path: /
+    methods: [GET]
+    defaults:
+        _controller: 'Psmoduler\Admin\Sections\Representatives\Http\Controllers\RepresentativeController::index'
+        _legacy_controller: 'PsmodulerAdminRepresentativesRepresentative'
+        _legacy_link: 'PsmodulerAdminRepresentativesRepresentative'

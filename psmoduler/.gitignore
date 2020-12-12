@@ -3,6 +3,6 @@
 /vendor
 /node_modules
 /composer.lock
-/_dev/yarn.lock
-/_dev/package-lock.json
-/_dev/node_modules
+/yarn.lock
+/package-lock.json
+/node_modules
