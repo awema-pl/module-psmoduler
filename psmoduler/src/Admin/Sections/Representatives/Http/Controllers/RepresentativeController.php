@@ -29,6 +29,7 @@ declare(strict_types=1);
 namespace Psmoduler\Admin\Sections\Representatives\Http\Controllers;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
+use Psmoduler\Admin\Sections\Representatives\Repositories\Contracts\RepresentativeRepository;
 
 class RepresentativeController extends FrameworkBundleAdminController
 {
@@ -41,8 +42,9 @@ class RepresentativeController extends FrameworkBundleAdminController
      */
     public function index()
     {
+        /** @var RepresentativeRepository $repository */
         $repository = $this->get('psmoduler.admin.representatives.repositories.representative');
-        $representatives = $repository->getData();
+        $representatives = $repository->getByCode('456');
        // return $this->view('admin.sections.representatives.index');
         return $this->render('@Modules/psmoduler/resources/views/admin/sections/representatives/index.html.twig', [
             'representatives' =>$representatives,

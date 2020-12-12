@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS `PREFIX_psmoduler_representatives`;
+DROP TABLE IF EXISTS `PREFIX_psmoduler_representative`;

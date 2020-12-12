@@ -1,4 +1,4 @@
-CREATE TABLE `PREFIX_psmoduler_representatives`
+CREATE TABLE `PREFIX_psmoduler_representative`
 (
     `id_representative` INT unsigned NOT NULL AUTO_INCREMENT,
     `code`              VARCHAR(255) NOT NULL UNIQUE,
