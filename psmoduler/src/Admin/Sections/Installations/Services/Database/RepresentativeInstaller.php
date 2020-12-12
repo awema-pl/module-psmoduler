@@ -30,7 +30,7 @@ class RepresentativeInstaller implements RepresentativeInstallerContract
                 $error = [
                     'key' => json_encode($statement->errorInfo()),
                     'parameters' => [],
-                    'domain' => 'Modules.Psmoduler.Psmoduler',
+                    'domain' => 'Modules.Psmoduler.Admin.Installations',
                 ];
             }
         }
@@ -57,7 +57,7 @@ class RepresentativeInstaller implements RepresentativeInstallerContract
                 $error = [
                     'key' => json_encode($statement->errorInfo()),
                     'parameters' => [],
-                    'domain' => 'Modules.Psmoduler.Psmoduler',
+                    'domain' => 'Modules.Psmoduler.Admin.Installations',
                 ];
             }
         }

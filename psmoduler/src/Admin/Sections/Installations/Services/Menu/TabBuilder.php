@@ -28,7 +28,7 @@ declare(strict_types=1);
 
 namespace Psmoduler\Admin\Sections\Installations\Services\Menu;
 
-use Psmoduler\Exception\PsmodulerException;
+use Psmoduler\Admin\Sections\Installations\Exceptions\PsmodulerInstallationException;
 use Tab;
 use Language;
 use Module;
@@ -63,16 +63,16 @@ class TabBuilder implements TabBuilderContract
     public function addTab($config)
     {
         if (!isset($config['controller_class_name'])) {
-            throw new PsmodulerException('Not fount "controller_class_name" in configuration.');
+            throw new PsmodulerInstallationException('Not found "controller_class_name" in configuration.');
         }
         else if (!isset($config['name_id'])) {
-            throw new PsmodulerException('Not fount "name_id" in configuration.');
+            throw new PsmodulerInstallationException('Not found "name_id" in configuration.');
         }
         else if (!isset($config['module_name'])) {
-            throw new PsmodulerException('Not fount "module_name" in configuration.');
+            throw new PsmodulerInstallationException('Not found "module_name" in configuration.');
         }
         else if (!isset($config['icon'])) {
-            throw new PsmodulerException('Not fount "icon" in configuration.');
+            throw new PsmodulerInstallationException('Not found "icon" in configuration.');
         }
         $controllerClassName = $config['controller_class_name'];
         $tabId = (int)Tab::getIdFromClassName($controllerClassName);
@@ -87,7 +87,7 @@ class TabBuilder implements TabBuilderContract
         }
         $tab->name = [];
         foreach (Language::getLanguages(false) as $lang) {
-            $tab->name[$lang['id_lang']] = $this->module->getTranslator()->trans($config['name_id'], [], 'Modules.Psmoduler.Psmoduler', $lang['locale']);
+            $tab->name[$lang['id_lang']] = $this->module->getTranslator()->trans($config['name_id'], [], 'Modules.Psmoduler.Admin.Installations', $lang['locale']);
         }
         $tab->icon = $config['icon'];
         if ($parentControllerClassName = isset($config['parent_controller_class_name']) ? $config['parent_controller_class_name'] : null) {
@@ -117,7 +117,7 @@ class TabBuilder implements TabBuilderContract
     public function deleteTab($config)
     {
         if (!isset($config['controller_class_name'])) {
-            throw new PsmodulerException('Not fount "controller_class_name" in configuration.');
+            throw new PsmodulerInstallationException('Not found "controller_class_name" in configuration.');
         }
         $controllerClassName = $config['controller_class_name'];
         $idTab = Tab::getIdFromClassName($controllerClassName);

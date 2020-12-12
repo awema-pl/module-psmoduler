@@ -1,3 +1,3 @@
 services:
-    psmoduler.repository.representative_repository:
+    psmoduler.admin.representatives.repositories.representative:
         class: Psmoduler\Admin\Sections\Representatives\Repositories\RepresentativeRepository

@@ -1,2 +1,2 @@
 imports:
-    - { resource: admin/sections/representatives/services.yml }
+    - { resource: admin/sections/representatives/_services.yml }

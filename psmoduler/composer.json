@@ -17,5 +17,7 @@
         "psr-4": {
             "Psmoduler\\": "tests/"
         }
+    },
+    "require": {
     }
 }

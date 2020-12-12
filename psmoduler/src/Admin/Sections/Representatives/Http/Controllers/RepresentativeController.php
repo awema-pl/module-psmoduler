@@ -41,8 +41,9 @@ class RepresentativeController extends FrameworkBundleAdminController
      */
     public function index()
     {
-        $repository = $this->get('psmoduler.repository.representative_repository');
+        $repository = $this->get('psmoduler.admin.representatives.repositories.representative');
         $representatives = $repository->getData();
+       // return $this->view('admin.sections.representatives.index');
         return $this->render('@Modules/psmoduler/resources/views/admin/sections/representatives/index.html.twig', [
             'representatives' =>$representatives,
         ]);
