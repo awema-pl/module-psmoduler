@@ -48,7 +48,7 @@ class Psmoduler extends Module
     public function __construct()
     {
         $this->tabBuilder = new TabBuilder($this);
-        $this->representativeInstaller = new RepresentativeInstaller();
+        $this->representativeInstaller = new RepresentativeInstaller($this);
         $this->name = 'psmoduler';
         $this->tab = 'others';
         $this->version = '1.0.0';

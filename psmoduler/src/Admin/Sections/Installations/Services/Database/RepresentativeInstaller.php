@@ -6,9 +6,18 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Statement;
 use Psmoduler\Admin\Sections\Installations\Services\Database\Contracts\RepresentativeInstaller as RepresentativeInstallerContract;
+use Context;
+use Module;
 
 class RepresentativeInstaller implements RepresentativeInstallerContract
 {
+    /** @var Module $module */
+    private $module;
+
+    public function __construct(Module $module){
+        $this->module = $module;
+    }
+
     /**
      * Install
      *
@@ -17,7 +26,7 @@ class RepresentativeInstaller implements RepresentativeInstallerContract
      */
     public function install()
     {
-        $connection = $this->get('doctrine.dbal.default_connection');
+        $connection = $this->module->get('doctrine.dbal.default_connection');
         $error = '';
         $this->uninstall();
         $sqlInstallFile = _PS_MODULE_DIR_ .'psmoduler/database/sql/2020_12_11_230000_create_representatives_table.sql';
@@ -45,7 +54,7 @@ class RepresentativeInstaller implements RepresentativeInstallerContract
      */
     public function uninstall()
     {
-        $connection = $this->get('doctrine.dbal.default_connection');
+        $connection =  $this->module->get('doctrine.dbal.default_connection');
         $error = '';
         $sqlUninstallFile = _PS_MODULE_DIR_ .'psmoduler/database/sql/2020_12_11_230000_drop_representatives_table.sql';
         $sqlQuery=file_get_contents($sqlUninstallFile);
