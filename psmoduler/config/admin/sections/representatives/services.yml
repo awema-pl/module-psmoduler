@@ -3,4 +3,4 @@ services:
         class: Psmoduler\Admin\Sections\Representatives\Services\RepresentativeService
         arguments:
             - '@prestashop.core.admin.lang.repository'
-            - '@doctrine.orm.default_entity_manager'
+            - '@psmoduler.admin.representatives.repositories.representative'

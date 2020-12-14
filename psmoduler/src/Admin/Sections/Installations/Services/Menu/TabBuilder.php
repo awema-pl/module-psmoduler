@@ -28,7 +28,7 @@ declare(strict_types=1);
 
 namespace Psmoduler\Admin\Sections\Installations\Services\Menu;
 
-use Psmoduler\Admin\Sections\Installations\Exceptions\PsmodulerInstallationException;
+use Psmoduler\Exceptions\PsmodulerException;
 use Tab;
 use Language;
 use Module;
@@ -63,16 +63,16 @@ class TabBuilder implements TabBuilderContract
     public function addTab($config)
     {
         if (!isset($config['controller_class_name'])) {
-            throw new PsmodulerInstallationException('Not found "controller_class_name" in configuration.');
+            throw new PsmodulerException('Not found "controller_class_name" in configuration.');
         }
         else if (!isset($config['name_id'])) {
-            throw new PsmodulerInstallationException('Not found "name_id" in configuration.');
+            throw new PsmodulerException('Not found "name_id" in configuration.');
         }
         else if (!isset($config['module_name'])) {
-            throw new PsmodulerInstallationException('Not found "module_name" in configuration.');
+            throw new PsmodulerException('Not found "module_name" in configuration.');
         }
         else if (!isset($config['icon'])) {
-            throw new PsmodulerInstallationException('Not found "icon" in configuration.');
+            throw new PsmodulerException('Not found "icon" in configuration.');
         }
         $controllerClassName = $config['controller_class_name'];
         $tabId = (int)Tab::getIdFromClassName($controllerClassName);
@@ -117,7 +117,7 @@ class TabBuilder implements TabBuilderContract
     public function deleteTab($config)
     {
         if (!isset($config['controller_class_name'])) {
-            throw new PsmodulerInstallationException('Not found "controller_class_name" in configuration.');
+            throw new PsmodulerException('Not found "controller_class_name" in configuration.');
         }
         $controllerClassName = $config['controller_class_name'];
         $idTab = Tab::getIdFromClassName($controllerClassName);

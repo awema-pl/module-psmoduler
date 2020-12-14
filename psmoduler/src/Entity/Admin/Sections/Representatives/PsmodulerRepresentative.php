@@ -26,23 +26,24 @@
  */
 declare(strict_types=1);
 
-namespace Psmoduler\Admin\Sections\Representatives\Models;
+namespace Psmoduler\Entity\Admin\Sections\Representatives;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Psmoduler\Admin\Sections\Representatives\Repositories\RepresentativeRepository")
  * @ORM\HasLifecycleCallbacks
  */
-class Representative
+class PsmodulerRepresentative
 {
     /**
      * @var int
      * @ORM\Id
-     * @ORM\Column(name="id_quote", type="integer")
+     * @ORM\Column(name="id_representative", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -201,20 +202,7 @@ class Representative
     {
         return $this->dateUpd;
     }
-
-    /**
-     * Now we tell doctrine that before we persist or update we call the updatedTimestamps() function.
-     *
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function generateCode()
-    {
-        if ($this->getCode() == null) {
-            $this->setCode(new DateTime());
-        }
-    }
-
+    
     /**
      * Now we tell doctrine that before we persist or update we call the updatedTimestamps() function.
      *
@@ -229,8 +217,9 @@ class Representative
         }
     }
 
-    public function createCode()
+    public function toArray()
     {
-        substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 5);
+        return ['code' =>$this->getCode()];
     }
+
 }

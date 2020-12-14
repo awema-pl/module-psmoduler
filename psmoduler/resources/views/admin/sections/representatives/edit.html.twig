@@ -25,18 +25,15 @@
  *#}
 {% extends '@PrestaShop/Admin/layout.html.twig' %}
 {% block content %}
-    {% block representatives_list_panel %}
-        <div class="row">
-            <div class="col">
-                {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': representativeGrid} %}
-            </div>
+    <div class="row justify-content-center">
+        <div class="col">
+            {% include '@Modules/psmoduler/resources/views/admin/sections/representatives/form.html.twig' %}
         </div>
-    {% endblock %}
+    </div>
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('../modules/psmoduler/dist/js/admin/sections/representatives/index.js') }}"></script>
-    <script src="{{ asset('themes/default/js/bundle/pagination.js') }}"></script>
 {% endblock %}

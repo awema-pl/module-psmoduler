@@ -1,3 +1,6 @@
 imports:
     - { resource: repositories.yml }
     - { resource: services.yml }
+    - { resource: grids.yml }
+    - { resource: forms.yml }
+    - { resource: toolbars.yml }

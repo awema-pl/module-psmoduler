@@ -23,20 +23,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *#}
-{% extends '@PrestaShop/Admin/layout.html.twig' %}
-{% block content %}
-    {% block representatives_list_panel %}
-        <div class="row">
-            <div class="col">
-                {% include '@PrestaShop/Admin/Common/Grid/grid_panel.html.twig' with {'grid': representativeGrid} %}
+{% import '@PrestaShop/Admin/macros.html.twig' as ps %}
+
+{% block representative_form %}
+    {{ form_start(representativeForm) }}
+    <div class="card">
+        <h3 class="card-header">
+            <i class="material-icons">group</i>
+            {{ 'Representatives'|trans({}, 'Modules.Psmoduler.Admin') }}
+        </h3>
+        <div class="card-block row">
+            <div class="card-text">
+                {{ form_errors(representativeForm) }}
+
+                {% block representative_form_rest %}
+                    {{ form_rest(representativeForm) }}
+                {% endblock %}
             </div>
         </div>
-    {% endblock %}
-{% endblock %}
-{% block stylesheets %}
-    {{ parent() }}
-{% endblock %}
-{% block javascripts %}
-    <script src="{{ asset('../modules/psmoduler/dist/js/admin/sections/representatives/index.js') }}"></script>
-    <script src="{{ asset('themes/default/js/bundle/pagination.js') }}"></script>
+        <div class="card-footer">
+            <a href="{{ path('psmoduler_admin_representatives_index') }}" class="btn btn-outline-secondary">
+                {{ 'Cancel'|trans({}, 'Admin.Actions') }}
+            </a>
+            <button class="btn btn-primary float-right">
+                {{ 'Save'|trans({}, 'Admin.Actions') }}
+            </button>
+        </div>
+    </div>
+    {{ form_end(representativeForm) }}
 {% endblock %}

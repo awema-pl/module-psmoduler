@@ -3,4 +3,4 @@ services:
         class: Psmoduler\Admin\Sections\Representatives\Repositories\RepresentativeRepository
         factory: [ '@doctrine.orm.default_entity_manager', getRepository ]
         arguments:
-            - Psmoduler\Admin\Sections\Representatives\Models\Representative
+            - Psmoduler\Entity\Admin\Sections\Representatives\PsmodulerRepresentative

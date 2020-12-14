@@ -1,0 +1,6 @@
+services:
+    psmoduler.admin.representatives.toolbars.representative:
+        class: 'Psmoduler\Admin\Sections\Representatives\Toolbars\RepresentativeToolbar'
+        arguments:
+            - '@translator'
+            - '@router'

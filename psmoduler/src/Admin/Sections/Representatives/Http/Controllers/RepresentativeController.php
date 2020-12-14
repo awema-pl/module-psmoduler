@@ -29,26 +29,130 @@ declare(strict_types=1);
 namespace Psmoduler\Admin\Sections\Representatives\Http\Controllers;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
+use Psmoduler\Admin\Sections\Representatives\Grids\Filters\RepresentativeFilters;
 use Psmoduler\Admin\Sections\Representatives\Repositories\Contracts\RepresentativeRepository;
+use Psmoduler\Admin\Sections\Representatives\Services\Contracts\RepresentativeService;
+use Psmoduler\Admin\Sections\Representatives\Toolbars\RepresentativeToolbar;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
 class RepresentativeController extends FrameworkBundleAdminController
 {
     const TAB_CLASS_NAME = 'PsmodulerAdminRepresentativesRepresentative';
 
     /**
-     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))")
+     * List representatives
      *
+     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))")
+     * @param RepresentativeFilters $filters
      * @return Response
      */
-    public function index()
+    public function index(RepresentativeFilters $filters)
     {
-        /** @var RepresentativeRepository $repository */
-        $repository = $this->get('psmoduler.admin.representatives.repositories.representative');
-        $representatives = $repository->getByCode('456');
-       // return $this->view('admin.sections.representatives.index');
+        $representativeGridFactory = $this->get('psmoduler.admin.representatives.grids.factories.representatives');
+        $representativeGrid = $representativeGridFactory->getGrid($filters);
+        $toolbar = $this->get('psmoduler.admin.representatives.toolbars.representative');
+
         return $this->render('@Modules/psmoduler/resources/views/admin/sections/representatives/index.html.twig', [
-            'representatives' =>$representatives,
+            'enableSidebar' => true,
+            'layoutTitle' => $this->trans('Representatives', 'Modules.Psmoduler.Admin'),
+            'layoutHeaderToolbarBtn' => $toolbar->getToolbarButtons(),
+            'representativeGrid' => $this->presentGrid($representativeGrid),
         ]);
 
+    }
+
+
+    /**
+     * Create representative
+     *
+     * @AdminSecurity("is_granted('create', request.get('_legacy_controller'))")
+     * @param Request $request
+     * @return Response
+     */
+    public function create(Request $request)
+    {
+        $representativeFormBuilder = $this->get('psmoduler.admin.representatives.forms.identifiable_object.builder.representative_form_builder');
+        $representativeForm = $representativeFormBuilder->getForm();
+        $representativeForm->handleRequest($request);
+
+        $representativeFormHandler = $this->get('psmoduler.admin.representatives.forms.identifiable_object.handler.representative_form_handler');
+        $result = $representativeFormHandler->handle($representativeForm);
+
+        if (null !== $result->getIdentifiableObjectId()) {
+            $this->addFlash(
+                'success',
+                $this->trans('Successful creation.', 'Admin.Notifications.Success')
+            );
+
+            return $this->redirectToRoute('psmoduler_admin_representatives_index');
+        }
+
+        return $this->render('@Modules/psmoduler/resources/views/admin/sections/representatives/create.html.twig', [
+            'representativeForm' => $representativeForm->createView(),
+        ]);
+    }
+
+    /**
+     * Edit representatives
+     *
+     * @AdminSecurity("is_granted('update', request.get('_legacy_controller'))")
+     * @param Request $request
+     * @param int $idRepresentative
+     * @return Response
+     */
+    public function edit(Request $request, $idRepresentative)
+    {
+        $representativeFormBuilder = $this->get('psmoduler.admin.representatives.forms.identifiable_object.builder.representative_form_builder');
+        $representativeForm = $representativeFormBuilder->getFormFor((int) $idRepresentative);
+        $representativeForm->handleRequest($request);
+
+        $representativeFormHandler = $this->get('psmoduler.admin.representatives.forms.identifiable_object.handler.representative_form_handler');
+        $result = $representativeFormHandler->handleFor((int) $idRepresentative, $representativeForm);
+
+        if ($result->isSubmitted() && $result->isValid()) {
+            $this->addFlash('success', $this->trans('Successful update.', 'Admin.Notifications.Success'));
+
+            return $this->redirectToRoute('psmoduler_admin_representatives_index');
+        }
+
+        return $this->render('@Modules/psmoduler/resources/views/admin/sections/representatives/edit.html.twig', [
+            'representativeForm' => $representativeForm->createView(),
+        ]);
+    }
+
+    /**
+     * Delete bulk representatives
+     *
+     * @AdminSecurity("is_granted('delete', request.get('_legacy_controller'))")
+     * @param Request $request
+     * @return Response
+     */
+    public function deleteBulk(Request $request)
+    {
+        $representativeIds = $request->request->get('representative_bulk');
+        $repository = $this->get('psmoduler.admin.representatives.repositories.representative');
+        try {
+            $representatives = $repository->findById($representativeIds);
+        } catch (EntityNotFoundException $e) {
+            $representatives = null;
+        }
+        if (!empty($representatives)) {
+            /** @var EntityManagerInterface $em */
+            $em = $this->get('doctrine.orm.entity_manager');
+            foreach ($representatives as $representative) {
+                $em->remove($representative);
+            }
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                $this->trans('The selection has been successfully deleted.', 'Admin.Notifications.Success')
+            );
+        }
+
+        return $this->redirectToRoute('psmoduler_admin_representatives_index');
     }
 }

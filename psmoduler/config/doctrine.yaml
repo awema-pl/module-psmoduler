@@ -1,0 +1,4 @@
+doctrine:
+    dbal:
+        types:
+            custom_first:  Psmoduler\Admin\Entity\PsmodulerRepresentative
