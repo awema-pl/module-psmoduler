@@ -6,10 +6,23 @@ interface RepresentativeRepository
     /**
      * Find one by code
      *
-     * @param array $conditions
-     * @param array $columns
-     *
-     * @return array|null
+     * @param string $code
+     * @return object|null
      */
     public function findOneByCode($code);
+
+    /**
+     * Find one by ID employee
+     *
+     * @param int $idEmployee
+     * @return object|null
+     */
+    public function findOneByIdEmployee($idEmployee);
+
+    /**
+     * Get employee ID's
+     *
+     * @return array
+     */
+    public function getEmployeeIds();
 }

@@ -1,0 +1,5 @@
+services:
+    psmoduler.admin.profiles.repositories.profile:
+        class: Psmoduler\Admin\Sections\Profiles\Repositories\ProfileRepository
+        arguments:
+            - '@doctrine.dbal.default_connection'

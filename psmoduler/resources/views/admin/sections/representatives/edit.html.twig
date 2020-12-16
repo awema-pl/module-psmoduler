@@ -27,13 +27,17 @@
 {% block content %}
     <div class="row justify-content-center">
         <div class="col">
-            {% include '@Modules/psmoduler/resources/views/admin/sections/representatives/form.html.twig' %}
+            {% include '@Modules/psmoduler/resources/views/admin/sections/representatives/form.html.twig'
+                with {'icon':'edit', 'label': 'Edit representative', 'submitButtonLabel': 'Save', 'isForEditing' : true} %}
         </div>
     </div>
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
+    <link href="{{ asset('../modules/psmoduler/dist/css/admin/sections/representatives/index.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('themes/default/js/vendor/jquery-passy.js') }}"></script>
     <script src="{{ asset('../modules/psmoduler/dist/js/admin/sections/representatives/index.js') }}"></script>
 {% endblock %}

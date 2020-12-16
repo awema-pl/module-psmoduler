@@ -18,6 +18,7 @@ use PrestaShop\PrestaShop\Core\Grid\Definition\Factory\AbstractGridDefinitionFac
 use PrestaShop\PrestaShop\Core\Grid\Filter\Filter;
 use PrestaShop\PrestaShop\Core\Grid\Filter\FilterCollection;
 use PrestaShopBundle\Form\Admin\Type\SearchAndResetType;
+use Psmoduler\Admin\Sections\Commons\Grids\Columns\IncludeTwigTypeColumn;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class RepresentativeGridDefinitionFactory extends AbstractGridDefinitionFactory
@@ -55,6 +56,13 @@ class RepresentativeGridDefinitionFactory extends AbstractGridDefinitionFactory
                 ->setName($this->trans('ID', [], 'Admin.Global'))
                 ->setOptions([
                     'field' => 'id_representative',
+                ])
+            )
+            ->add((new IncludeTwigTypeColumn('id_employee'))
+                ->setName($this->trans('Employee', [], 'Admin.Global'))
+                ->setOptions([
+                    'view' =>'@Modules/psmoduler/resources/views/admin/sections/representatives/grids/columns/employee.html.twig',
+                    'parameters' =>[],
                 ])
             )
             ->add((new DataColumn('code'))
@@ -107,20 +115,20 @@ class RepresentativeGridDefinitionFactory extends AbstractGridDefinitionFactory
     protected function getFilters()
     {
         return (new FilterCollection())
-            ->add((new Filter('id_representative', TextType::class))
+            ->add((new Filter('id_employee', TextType::class))
                 ->setTypeOptions([
                     'required' => false,
                     'attr' => [
-                        'placeholder' => $this->trans('ID', [], 'Admin.Global'),
+                        'placeholder' => $this->trans('Employee', [], 'Admin.Global'),
                     ],
                 ])
-                ->setAssociatedColumn('id_representative')
+                ->setAssociatedColumn('id_employee')
             )
             ->add((new Filter('code', TextType::class))
                 ->setTypeOptions([
                     'required' => false,
                     'attr' => [
-                        'placeholder' => $this->trans('Code representative', [], 'Modules.Psmoduler.Admin'),
+                        'placeholder' => $this->trans('Representative code ', [], 'Modules.Psmoduler.Admin'),
                     ],
                 ])
                 ->setAssociatedColumn('code')

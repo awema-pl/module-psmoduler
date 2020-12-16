@@ -1,3 +1,3 @@
 psmoduler_admin_representatives:
-    resource: "admin/sections/representatives/_routes.yml"
+    resource: "admin/sections/representatives/routes.yml"
     prefix: /psmoduler/representatives

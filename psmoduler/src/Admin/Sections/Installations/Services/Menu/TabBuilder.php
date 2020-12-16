@@ -2,8 +2,6 @@
 /**
  * The MIT License (MIT)
  *
- * @author    Awema <developer@awema.pl>
- * @copyright Copyright (c) 2020 Awema
  * @license   MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,7 +26,7 @@ declare(strict_types=1);
 
 namespace Psmoduler\Admin\Sections\Installations\Services\Menu;
 
-use Psmoduler\Exceptions\PsmodulerException;
+use Psmoduler\Admin\Sections\Commons\Exceptions\PsmodulerException;
 use Tab;
 use Language;
 use Module;
@@ -87,7 +85,7 @@ class TabBuilder implements TabBuilderContract
         }
         $tab->name = [];
         foreach (Language::getLanguages(false) as $lang) {
-            $tab->name[$lang['id_lang']] = $this->module->getTranslator()->trans($config['name_id'], [], 'Modules.Psmoduler.Admin.Installations', $lang['locale']);
+            $tab->name[$lang['id_lang']] = $this->module->getTranslator()->trans($config['name_id'], [], 'Modules.Psmoduler.Admin', $lang['locale']);
         }
         $tab->icon = $config['icon'];
         if ($parentControllerClassName = isset($config['parent_controller_class_name']) ? $config['parent_controller_class_name'] : null) {

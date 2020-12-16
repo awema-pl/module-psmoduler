@@ -1,0 +1,54 @@
+{#**
+ * The MIT License (MIT)
+ *
+ *  @author    Awema <developer@awema.pl>
+ *  @copyright Copyright (c) 2020 Awema
+ *  @license   MIT License
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *#}
+{% import '@PrestaShop/Admin/macros.html.twig' as ps %}
+
+{% block assign_representative_form %}
+    {{ form_start(assignRepresentativeForm) }}
+    <div class="card">
+        <h3 class="card-header">
+            <i class="material-icons">folder_shared</i>
+            {{ 'Assign Representative'|trans({}, 'Modules.Psmoduler.Admin') }}
+        </h3>
+        <div class="card-block row">
+            <div class="card-text">
+                {{ form_errors(assignRepresentativeForm) }}
+
+                {% block assign_representative_form_rest %}
+                    {{ form_rest(assignRepresentativeForm) }}
+                {% endblock %}
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="{{ path('psmoduler_admin_representatives_index') }}" class="btn btn-outline-secondary">
+                {{ 'Cancel'|trans({}, 'Admin.Actions') }}
+            </a>
+            <button class="btn btn-primary float-right">
+                {{ 'Assign'|trans({}, 'Admin.Actions') }}
+            </button>
+        </div>
+    </div>
+    {{ form_end(assignRepresentativeForm) }}
+{% endblock %}

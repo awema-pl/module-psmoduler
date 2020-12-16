@@ -1,0 +1,59 @@
+psmoduler_admin_representatives_index:
+    path: /
+    methods: [GET]
+    defaults:
+        _controller: 'Psmoduler\Admin\Sections\Representatives\Http\Controllers\RepresentativeController::index'
+        _legacy_controller: 'PsmodulerAdminRepresentativesRepresentative'
+        _legacy_link: 'PsmodulerAdminRepresentativesRepresentative'
+
+psmoduler_admin_representatives_search:
+    path: /
+    methods: [POST]
+    defaults:
+        _controller: 'Psmoduler\Admin\Sections\Representatives\Http\Controllers\RepresentativeController::search'
+        _legacy_controller: 'PsmodulerAdminRepresentativesRepresentative'
+        _legacy_link: 'PsmodulerAdminRepresentativesRepresentative:search'
+
+psmoduler_admin_representatives_create:
+    path: /new
+    methods: [GET, POST]
+    defaults:
+        _controller: 'Psmoduler\Admin\Sections\Representatives\Http\Controllers\RepresentativeController::create'
+        _legacy_controller: 'PsmodulerAdminRepresentativesRepresentative'
+        _legacy_link: 'PsmodulerAdminRepresentativesRepresentative:add'
+
+psmoduler_admin_representatives_assign:
+    path: /assign
+    methods: [GET, POST]
+    defaults:
+        _controller: 'Psmoduler\Admin\Sections\Representatives\Http\Controllers\RepresentativeController::assign'
+        _legacy_controller: 'PsmodulerAdminRepresentativesRepresentative'
+        _legacy_link: 'PsmodulerAdminRepresentativesRepresentative:assign'
+
+psmoduler_admin_representatives_edit:
+    path: /{idRepresentative}/edit
+    methods: [GET, POST]
+    defaults:
+        _controller: 'Psmoduler\Admin\Sections\Representatives\Http\Controllers\RepresentativeController::edit'
+        _legacy_controller: 'PsmodulerAdminRepresentativesRepresentative'
+        _legacy_link: 'PsmodulerAdminRepresentativesRepresentative:update'
+    requirements:
+        idRepresentative: \d+
+
+psmoduler_admin_representatives_delete:
+    path: /{idRepresentative}/delete
+    methods: [DELETE]
+    defaults:
+        _controller: 'Psmoduler\Admin\Sections\Representatives\Http\Controllers\RepresentativeController::delete'
+        _legacy_controller: 'PsmodulerAdminRepresentativesRepresentative'
+        _legacy_link: 'PsmodulerAdminRepresentativesRepresentative:delete'
+    requirements:
+        idRepresentative: \d+
+
+psmoduler_admin_representatives_bulk_delete:
+    path: /bulkDelete
+    methods: [POST]
+    defaults:
+        _controller: 'Psmoduler\Admin\Sections\Representatives\Http\Controllers\RepresentativeController::deleteBulk'
+        _legacy_controller: 'PsmodulerAdminRepresentativesRepresentative'
+        _legacy_link: 'PsmodulerAdminRepresentativesRepresentative:submitBulkdelete'

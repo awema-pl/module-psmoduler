@@ -1,0 +1,5 @@
+services:
+    psmoduler.admin.authorization_roles.repositories.authorization_role:
+        class: Psmoduler\Admin\Sections\AuthorizationRoles\Repositories\AuthorizationRoleRepository
+        arguments:
+            - '@doctrine.dbal.default_connection'

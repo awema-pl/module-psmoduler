@@ -2,8 +2,6 @@
 /**
  * The MIT License (MIT)
  *
- * @author    Awema <developer@awema.pl>
- * @copyright Copyright (c) 2020 Awema
  * @license   MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,6 +34,10 @@ use Psmoduler\Admin\Sections\Installations\Services\Menu\Contracts\TabBuilder as
 use Psmoduler\Admin\Sections\Installations\Services\Menu\TabBuilder;
 use Psmoduler\Admin\Sections\Installations\Services\Database\Contracts\RepresentativeInstaller as RepresentativeInstallerContract;
 use Psmoduler\Admin\Sections\Installations\Services\Database\RepresentativeInstaller;
+use Psmoduler\Admin\Sections\Installations\Services\Database\Contracts\ProfileInstaller as ProfileInstallerContract;
+use Psmoduler\Admin\Sections\Installations\Services\Database\ProfileInstaller;
+use Psmoduler\Admin\Sections\Installations\Services\Database\Contracts\AccessInstaller as AccessInstallerContract;
+use Psmoduler\Admin\Sections\Installations\Services\Database\AccessInstaller;
 
 class Psmoduler extends Module
 {
@@ -45,17 +47,25 @@ class Psmoduler extends Module
     /** @var RepresentativeInstallerContract $representativeInstaller */
     protected $representativeInstaller;
 
+    /** @var ProfileInstallerContract $profileInstaller */
+    protected $profileInstaller;
+
+    /** @var AccessInstallerContract $accessInstaller */
+    protected $accessInstaller;
+
     public function __construct()
     {
         $this->tabBuilder = new TabBuilder($this);
         $this->representativeInstaller = new RepresentativeInstaller($this);
+        $this->profileInstaller = new ProfileInstaller($this);
+        $this->accessInstaller = new AccessInstaller($this);
         $this->name = 'psmoduler';
         $this->tab = 'others';
         $this->version = '1.0.0';
         $this->author = 'Awema';
         $this->need_instance = true;
         $this->ps_versions_compliancy = [
-            'min' => '1.7.6',
+            'min' => '1.7.6.0',
             'max' => _PS_VERSION_
         ];
         $this->bootstrap = true;
@@ -74,33 +84,20 @@ class Psmoduler extends Module
 
     public function install()
     {
-        return $this->installSql() && parent::install() && $this->installTabs();
+        return $this->representativeInstaller->install()
+            && $this->profileInstaller->install()
+            && $this->accessInstaller->install()
+            && parent::install()
+            && $this->installTabs();
     }
 
     public function uninstall()
     {
-        return $this->uninstallSql() && parent::uninstall() && $this->uninstallTabs();
-    }
-
-    /**
-     * Install SQL
-     *
-     * @return bool
-     */
-    private function installSql()
-    {
-
-       return empty($this->representativeInstaller->install());
-    }
-
-    /**
-     * Uninstall SQL
-     *
-     * @return bool
-     */
-    private function uninstallSql()
-    {
-        return empty($this->representativeInstaller->uninstall());
+        return $this->representativeInstaller->uninstall()
+            && $this->profileInstaller->uninstall()
+            && $this->accessInstaller->uninstall()
+            && parent::uninstall()
+            && $this->uninstallTabs();
     }
 
     /**

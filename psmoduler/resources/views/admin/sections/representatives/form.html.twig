@@ -29,16 +29,18 @@
     {{ form_start(representativeForm) }}
     <div class="card">
         <h3 class="card-header">
-            <i class="material-icons">group</i>
-            {{ 'Representatives'|trans({}, 'Modules.Psmoduler.Admin') }}
+            <i class="material-icons">{{ icon }}</i>
+            {{ label|trans({}, 'Modules.Psmoduler.Admin') }}
         </h3>
         <div class="card-block row">
             <div class="card-text">
                 {{ form_errors(representativeForm) }}
-
                 {% block representative_form_rest %}
                     {{ form_rest(representativeForm) }}
                 {% endblock %}
+{#                {% if isForEditing %}#}
+{#                   #}
+{#                {% endif %}#}
             </div>
         </div>
         <div class="card-footer">
@@ -46,7 +48,7 @@
                 {{ 'Cancel'|trans({}, 'Admin.Actions') }}
             </a>
             <button class="btn btn-primary float-right">
-                {{ 'Save'|trans({}, 'Admin.Actions') }}
+                {{ submitButtonLabel|trans({}, 'Admin.Actions') }}
             </button>
         </div>
     </div>

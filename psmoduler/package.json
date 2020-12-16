@@ -6,7 +6,9 @@
     "author": "Awema <developer@awema.pl>",
     "license": "MIT",
     "devDependencies": {
-        "@symfony/webpack-encore": "^0.20.1"
+        "@symfony/webpack-encore": "^0.20.1",
+        "stylus": "^0.54.8",
+        "stylus-loader": "^3.0"
     },
     "dependencies": {
         "webpack-shell-plugin": "^0.5.0"

@@ -2,8 +2,6 @@
 /**
  * The MIT License (MIT)
  *
- *  @author    Awema <developer@awema.pl>
- *  @copyright Copyright (c) 2020 Awema
  *  @license   MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,13 +25,17 @@
 declare(strict_types=1);
 
 namespace Psmoduler\Admin\Sections\Representatives\Http\Controllers;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
+use Psmoduler\Admin\Sections\Representatives\Grids\Definitions\Factories\RepresentativeGridDefinitionFactory;
 use Psmoduler\Admin\Sections\Representatives\Grids\Filters\RepresentativeFilters;
 use Psmoduler\Admin\Sections\Representatives\Repositories\Contracts\RepresentativeRepository;
 use Psmoduler\Admin\Sections\Representatives\Services\Contracts\RepresentativeService;
 use Psmoduler\Admin\Sections\Representatives\Toolbars\RepresentativeToolbar;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Exception;
@@ -64,6 +66,25 @@ class RepresentativeController extends FrameworkBundleAdminController
 
     }
 
+    /**
+     * Provides filters functionality.
+     *
+     * @AdminSecurity("is_granted('read', request.get('_legacy_controller'))")
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function search(Request $request)
+    {
+        /** @var ResponseBuilder $responseBuilder */
+        $responseBuilder = $this->get('prestashop.bundle.grid.response_builder');
+
+        return $responseBuilder->buildSearchResponse(
+            $this->get('psmoduler.admin.representatives.grids.definitions.factories.representatives'),
+            $request,
+            RepresentativeGridDefinitionFactory::GRID_ID,
+            'psmoduler_admin_representatives_index'
+        );
+    }
 
     /**
      * Create representative
@@ -96,6 +117,36 @@ class RepresentativeController extends FrameworkBundleAdminController
     }
 
     /**
+     * Assign representative
+     *
+     * @AdminSecurity("is_granted('create', request.get('_legacy_controller'))")
+     * @param Request $request
+     * @return Response
+     */
+    public function assign(Request $request)
+    {
+        $assignRepresentativeFormBuilder = $this->get('psmoduler.admin.representatives.forms.identifiable_object.builder.assign_representative_form_builder');
+        $assignRepresentativeForm = $assignRepresentativeFormBuilder->getForm();
+        $assignRepresentativeForm->handleRequest($request);
+
+        $assignRepresentativeFormHandler = $this->get('psmoduler.admin.representatives.forms.identifiable_object.handler.assign_representative_form_handler');
+        $result = $assignRepresentativeFormHandler->handle($assignRepresentativeForm);
+
+        if (null !== $result->getIdentifiableObjectId()) {
+            $this->addFlash(
+                'success',
+                $this->trans('Successful creation.', 'Admin.Notifications.Success')
+            );
+
+            return $this->redirectToRoute('psmoduler_admin_representatives_index');
+        }
+
+        return $this->render('@Modules/psmoduler/resources/views/admin/sections/representatives/assign.html.twig', [
+            'assignRepresentativeForm' => $assignRepresentativeForm->createView(),
+        ]);
+    }
+
+    /**
      * Edit representatives
      *
      * @AdminSecurity("is_granted('update', request.get('_legacy_controller'))")
@@ -106,7 +157,10 @@ class RepresentativeController extends FrameworkBundleAdminController
     public function edit(Request $request, $idRepresentative)
     {
         $representativeFormBuilder = $this->get('psmoduler.admin.representatives.forms.identifiable_object.builder.representative_form_builder');
-        $representativeForm = $representativeFormBuilder->getFormFor((int) $idRepresentative);
+        $representativeForm = $representativeFormBuilder->getFormFor((int) $idRepresentative, [], [
+            'id_representative' =>(int) $idRepresentative,
+            'is_for_editing' => true,
+        ]);
         $representativeForm->handleRequest($request);
 
         $representativeFormHandler = $this->get('psmoduler.admin.representatives.forms.identifiable_object.handler.representative_form_handler');
@@ -119,8 +173,49 @@ class RepresentativeController extends FrameworkBundleAdminController
         }
 
         return $this->render('@Modules/psmoduler/resources/views/admin/sections/representatives/edit.html.twig', [
-            'representativeForm' => $representativeForm->createView(),
+            'representativeForm' => $representativeForm->createView()
         ]);
+    }
+
+
+    /**
+     * Delete representative
+     *
+     * @AdminSecurity("is_granted('delete', request.get('_legacy_controller'))")
+     * @param int $idRepresentative
+     * @return Response
+     */
+    public function delete($idRepresentative)
+    {
+        $repository = $this->get('psmoduler.admin.representatives.repositories.representative');
+        try {
+            $representative = $repository->findOneById($idRepresentative);
+        } catch (EntityNotFoundException $e) {
+            $representative = null;
+        }
+
+        if (null !== $representative) {
+            /** @var EntityManagerInterface $em */
+            $em = $this->get('doctrine.orm.entity_manager');
+            $em->remove($representative);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                $this->trans('Successful deletion.', 'Admin.Notifications.Success')
+            );
+        } else {
+            $this->addFlash(
+                'error',
+                $this->trans(
+                    'Cannot find representative %representative%',
+                    'Modules.Psmoduler.Admin',
+                    ['%representative%' => $idRepresentative]
+                )
+            );
+        }
+
+        return $this->redirectToRoute('psmoduler_admin_representatives_index');
     }
 
     /**

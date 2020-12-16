@@ -1,2 +1,6 @@
 imports:
-    - { resource: admin/sections/representatives/_services.yml }
+    - { resource: admin/sections/employees/services.yml }
+    - { resource: admin/sections/profiles/services.yml }
+    - { resource: admin/sections/accesses/services.yml }
+    - { resource: admin/sections/authorization_roles/services.yml }
+    - { resource: admin/sections/representatives/services.yml }

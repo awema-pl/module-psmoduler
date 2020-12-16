@@ -1,0 +1,6 @@
+services:
+    psmoduler.admin.employees.repositories.employee:
+        class: Psmoduler\Admin\Sections\Employees\Repositories\EmployeeRepository
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@=service("prestashop.adapter.legacy.context").getContext().shop.id'

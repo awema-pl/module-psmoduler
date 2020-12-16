@@ -1,6 +1,6 @@
-services:
-    psmoduler.admin.representatives.services.representative:
-        class: Psmoduler\Admin\Sections\Representatives\Services\RepresentativeService
-        arguments:
-            - '@prestashop.core.admin.lang.repository'
-            - '@psmoduler.admin.representatives.repositories.representative'
+imports:
+    - { resource: _repositories.yml }
+    - { resource: _services.yml }
+    - { resource: _grids.yml }
+    - { resource: _forms.yml }
+    - { resource: _toolbars.yml }

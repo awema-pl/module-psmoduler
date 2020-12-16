@@ -26,6 +26,7 @@ rsync -r --exclude '*.log' \
 ./ ../temp
 cd ..
 cd temp
+rm ./psmoduler/$filename
 zip -r ../psmoduler/$filename . *
 cd ..
 rm -rf temp

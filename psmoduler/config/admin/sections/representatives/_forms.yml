@@ -1,0 +1,84 @@
+services:
+    psmoduler.admin.representatives.forms.employee_form_choice_provider:
+        class: 'Psmoduler\Admin\Sections\Representatives\Forms\EmployeeFormChoiceProvider'
+        arguments:
+            - '@translator'
+            - '@psmoduler.admin.employees.repositories.employee'
+            - '@psmoduler.admin.representatives.repositories.representative'
+
+    psmoduler.admin.representatives.forms.representative:
+        class: 'Psmoduler\Admin\Sections\Representatives\Forms\RepresentativeType'
+        arguments:
+            - '@psmoduler.admin.representatives.repositories.representative'
+            - '@psmoduler.admin.employees.repositories.employee'
+            - '@=service("prestashop.core.form.choice_provider.all_languages").getChoices()'
+        calls:
+            - { method: setTranslator, arguments: [ '@translator' ] }
+        tags:
+            - { name: form.type }
+
+    psmoduler.admin.representatives.forms.identifiable_object.data_provider.representative_form_data_provider:
+        class: 'Psmoduler\Admin\Sections\Representatives\Forms\RepresentativeFormDataProvider'
+        arguments:
+            - "@=service('prestashop.adapter.legacy.context').getContext().employee.id_lang"
+            - '@psmoduler.admin.representatives.repositories.representative'
+            - '@psmoduler.admin.employees.repositories.employee'
+            - '@psmoduler.admin.representatives.services.representative'
+
+    psmoduler.admin.representatives.forms.identifiable_object.builder.representative_form_builder:
+        class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilder'
+        factory: 'prestashop.core.form.builder.form_builder_factory:create'
+        arguments:
+            - 'Psmoduler\Admin\Sections\Representatives\Forms\RepresentativeType'
+            - '@psmoduler.admin.representatives.forms.identifiable_object.data_provider.representative_form_data_provider'
+
+    psmoduler.admin.representatives.forms.identifiable_object.data_handler.representative_form_data_handler:
+        class: 'Psmoduler\Admin\Sections\Representatives\Forms\RepresentativeFormDataHandler'
+        arguments:
+            - '@psmoduler.admin.representatives.repositories.representative'
+            - '@psmoduler.admin.profiles.repositories.profile'
+            - '@doctrine.orm.default_entity_manager'
+
+    psmoduler.admin.representatives.forms.identifiable_object.handler.representative_form_handler:
+        class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Handler\FormHandler'
+        factory: 'prestashop.core.form.identifiable_object.handler.form_handler_factory:create'
+        arguments:
+            - '@psmoduler.admin.representatives.forms.identifiable_object.data_handler.representative_form_data_handler'
+
+# Assign
+
+    psmoduler.admin.representatives.forms.assign_representative:
+        class: 'Psmoduler\Admin\Sections\Representatives\Forms\AssignRepresentativeType'
+        arguments:
+            - '@psmoduler.admin.representatives.repositories.representative'
+            - '@=service("psmoduler.admin.representatives.forms.employee_form_choice_provider").getChoices()'
+        calls:
+            - { method: setTranslator, arguments: [ '@translator' ] }
+        tags:
+            - { name: form.type }
+
+    psmoduler.admin.representatives.forms.identifiable_object.data_provider.assign_representative_form_data_provider:
+        class: 'Psmoduler\Admin\Sections\Representatives\Forms\AssignRepresentativeFormDataProvider'
+        arguments:
+            - '@psmoduler.admin.representatives.repositories.representative'
+            - '@psmoduler.admin.representatives.services.representative'
+
+    psmoduler.admin.representatives.forms.identifiable_object.builder.assign_representative_form_builder:
+        class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilder'
+        factory: 'prestashop.core.form.builder.form_builder_factory:create'
+        arguments:
+            - 'Psmoduler\Admin\Sections\Representatives\Forms\AssignRepresentativeType'
+            - '@psmoduler.admin.representatives.forms.identifiable_object.data_provider.representative_form_data_provider'
+
+    psmoduler.admin.representatives.forms.identifiable_object.data_handler.assign_representative_form_data_handler:
+        class: 'Psmoduler\Admin\Sections\Representatives\Forms\AssignRepresentativeFormDataHandler'
+        arguments:
+            - '@psmoduler.admin.representatives.repositories.representative'
+            - '@psmoduler.admin.profiles.repositories.profile'
+            - '@doctrine.orm.default_entity_manager'
+
+    psmoduler.admin.representatives.forms.identifiable_object.handler.assign_representative_form_handler:
+        class: 'PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Handler\FormHandler'
+        factory: 'prestashop.core.form.identifiable_object.handler.form_handler_factory:create'
+        arguments:
+            - '@psmoduler.admin.representatives.forms.identifiable_object.data_handler.assign_representative_form_data_handler'

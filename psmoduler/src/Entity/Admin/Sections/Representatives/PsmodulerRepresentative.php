@@ -2,8 +2,6 @@
 /**
  * The MIT License (MIT)
  *
- *  @author    Awema <developer@awema.pl>
- *  @copyright Copyright (c) 2020 Awema
  *  @license   MIT License
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -216,10 +214,4 @@ class PsmodulerRepresentative
             $this->setDateAdd(new DateTime());
         }
     }
-
-    public function toArray()
-    {
-        return ['code' =>$this->getCode()];
-    }
-
 }

@@ -12,7 +12,7 @@ interface RepresentativeInstaller
     /**
      * Install
      *
-     * @return array|null
+     * @return bool
      * @throws \Doctrine\DBAL\DBALException
      */
     public function install();
@@ -20,7 +20,7 @@ interface RepresentativeInstaller
     /**
      * Uninstall
      *
-     * @return array|null
+     * @return bool
      * @throws DBALException
      */
     public function uninstall();

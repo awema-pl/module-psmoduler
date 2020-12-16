@@ -35,8 +35,10 @@
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
+    <link href="{{ asset('../modules/psmoduler/dist/css/admin/sections/representatives/index.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block javascripts %}
+    {{ parent() }}
     <script src="{{ asset('../modules/psmoduler/dist/js/admin/sections/representatives/index.js') }}"></script>
     <script src="{{ asset('themes/default/js/bundle/pagination.js') }}"></script>
 {% endblock %}

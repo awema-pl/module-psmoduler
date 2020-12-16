@@ -27,7 +27,8 @@ class RepresentativeQueryBuilder extends AbstractDoctrineQueryBuilder
      * @param DoctrineSearchCriteriaApplicatorInterface $searchCriteriaApplicator
      * @param int $languageId
      */
-    public function __construct(Connection $connection, $dbPrefix, DoctrineSearchCriteriaApplicatorInterface $searchCriteriaApplicator, $languageId) {
+    public function __construct(Connection $connection, $dbPrefix, DoctrineSearchCriteriaApplicatorInterface $searchCriteriaApplicator, $languageId)
+    {
         parent::__construct($connection, $dbPrefix);
         $this->searchCriteriaApplicator = $searchCriteriaApplicator;
         $this->languageId = $languageId;
@@ -39,12 +40,9 @@ class RepresentativeQueryBuilder extends AbstractDoctrineQueryBuilder
     public function getSearchQueryBuilder(SearchCriteriaInterface $searchCriteria)
     {
         $qb = $this->getQueryBuilder($searchCriteria->getFilters());
-        $qb->select('q.id_representative, q.code, q.phone');
-
         $this->searchCriteriaApplicator
             ->applySorting($searchCriteria, $qb)
             ->applyPagination($searchCriteria, $qb);
-
         return $qb;
     }
 
@@ -54,8 +52,7 @@ class RepresentativeQueryBuilder extends AbstractDoctrineQueryBuilder
     public function getCountQueryBuilder(SearchCriteriaInterface $searchCriteria)
     {
         $qb = $this->getQueryBuilder($searchCriteria->getFilters())
-            ->select('COUNT(DISTINCT q.id_representative)');
-
+            ->select('COUNT(DISTINCT r.id_representative)');
         return $qb;
     }
 
@@ -72,28 +69,38 @@ class RepresentativeQueryBuilder extends AbstractDoctrineQueryBuilder
             'id_representative',
             'code',
             'phone',
+            'id_employee'
         ];
-
         $qb = $this->connection
             ->createQueryBuilder()
-            ->from($this->dbPrefix . 'psmoduler_representative', 'q');
-
+            ->select('r.id_representative, r.code, r.phone, r.id_employee, e.id_employee, e.firstname as employeeFirstname, e.lastname as employeeLastname, e.email as employeeEmail')
+            ->from($this->dbPrefix . 'psmoduler_representative', 'r')
+            ->innerJoin('r', _DB_PREFIX_ . 'employee', 'e', 'r.id_employee = e.id_employee');
         foreach ($filters as $name => $value) {
             if (!in_array($name, $allowedFilters, true)) {
                 continue;
             }
-
             if ('id_representative' === $name) {
-                $qb->andWhere('q.`id_representative` = :' . $name);
+                $qb->andWhere('r.`id_representative` = :' . $name);
                 $qb->setParameter($name, $value);
-
                 continue;
             }
-
+            else if ('id_employee' === $name) {
+                $orX = $qb->expr()->orX();
+                $orX->add($qb->expr()->eq('r.`id_employee`', ':' . $name));
+                $qb->setParameter($name, $value);
+                foreach (explode(' ', $value) as $word){
+                    $orX->add($qb->expr()->like('e.`firstname`', ':' . $name));
+                    $orX->add($qb->expr()->like('e.`lastname`', ':' . $name));
+                    $orX->add($qb->expr()->like('e.`email`', ':' . $name));
+                    $qb->setParameter($name, '%'.$word.'%');
+                }
+                $qb->andWhere($orX);
+                continue;
+            }
             $qb->andWhere("$name LIKE :$name");
             $qb->setParameter($name, '%' . $value . '%');
         }
-
         return $qb;
     }
 }
