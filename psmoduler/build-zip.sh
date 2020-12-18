@@ -1,7 +1,8 @@
 filename="psmoduler.zip"
 rm -rf ../temp
 mkdir -p ../temp
-composer install
+composer install --no-dev
+composer dump-autoload -o --no-dev
 rsync -r --exclude '*.log' \
 --exclude '.idea' \
 --exclude 'node_modules' \

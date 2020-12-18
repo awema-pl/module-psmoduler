@@ -5,8 +5,6 @@ namespace Psmoduler\Admin\Sections\Representatives\Forms;
 
 use Doctrine\DBAL\Exception\NonUniqueFieldNameException;
 use Doctrine\ORM\EntityManagerInterface;
-use PrestaShop\PrestaShop\Adapter\Entity\Configuration;
-use PrestaShop\PrestaShop\Adapter\Entity\Tools;
 use Psmoduler\Admin\Sections\Commons\Exceptions\PsmodulerException;
 use Psmoduler\Admin\Sections\Installations\Services\Database\ProfileInstaller;
 use Psmoduler\Admin\Sections\Profiles\Repositories\ProfileRepository;
