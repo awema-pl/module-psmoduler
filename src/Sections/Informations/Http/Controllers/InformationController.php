@@ -30,6 +30,7 @@ class InformationController extends Controller
      */
     public function scope(Request $request)
     {
-        return response()->json(new EloquentInformation($request));
+        return response()->json(new EloquentInformation($request),200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+            JSON_UNESCAPED_UNICODE);
     }
 }
